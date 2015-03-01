@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Add Pokémon</ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+            <p:fieldset legend="Add Pokémon">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="species">Species:</p:outputLabel>
+                    <h:panelGroup id="speciesSelector">
+                        <p:autoComplete id="species" placeholder="type name or #"
+                            forceSelection="true"
+                            value="#{addPokemonBean.newPokemon.species}"
+                            completeMethod="#{addPokemonBean.findSpecies}"
+                            converter="speciesConverter" var="s" itemLabel="#{s.name}"
+                            itemValue="#{s}">
+                            <p:ajax event="itemSelect"
+                                listener="#{addPokemonBean.handleSelect}"
+                                update=":form:baseStats" />
+                            <p:column>
+                                <p:graphicImage library="default"
+                                    name="img/pkmn/icons/#{s.imgName}.png" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{s.num3Digits} - #{s.name}"></h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                    </h:panelGroup>
+                    <p:outputLabel for="nature">Nature:</p:outputLabel>
+                    <p:selectOneMenu id="nature"
+                        value="#{addPokemonBean.newPokemon.nature}">
+                        <f:selectItem itemLabel="Select Nature" itemValue="" />
+                        <f:selectItems value="#{data.natures}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="level">Current Level:</p:outputLabel>
+                    <p:spinner id="level" size="3" min="1" max="100"
+                        converter="javax.faces.Integer"
+                        value="#{addPokemonBean.newPokemon.lastCheckpoint.level}" />
+                    <p:outputLabel for="nickname">Nickname:</p:outputLabel>
+                    <p:inputText id="nickname"
+                        value="#{addPokemonBean.newPokemon.nickname}" />
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset id="baseStats" legend="Selected Species">
+                <h:panelGrid rendered="#{!addPokemonBean.selected}" columns="1"
+                    cellpadding="5">
+                    <h:outputText value="Select a species to see" />
+                    <h:outputText value="its base stats here." />
+                </h:panelGrid>
+                <h:panelGrid rendered="#{addPokemonBean.selected}" columns="2"
+                    cellpadding="5">
+                    <p:graphicImage library="default"
+                        name="img/pkmn/icons/#{addPokemonBean.newPokemon.species.imgName}.png" />
+                    <h:outputText id="speciesNum"
+                        value="##{addPokemonBean.newPokemon.species.num3Digits}" />
+                    <p:outputLabel for="speciesName">Name:</p:outputLabel>
+                    <h:outputText id="speciesName"
+                        value="#{addPokemonBean.newPokemon.species.name}" />
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="base#{s.code}">Base ${s.fullName}:</p:outputLabel>
+                        <h:outputText id="base#{s.code}"
+                            value="#{addPokemonBean.newPokemon.species.baseStats[s]}" />
+                    </c:forEach>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset id="testIVs" legend="Test IVs">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="testiv#{s.code}">${s.fullName} IVs:</p:outputLabel>
+                        <p:spinner id="testiv#{s.code}" size="3" min="0" max="999"
+                            converter="javax.faces.Integer"
+                            value="#{addPokemonBean.testPokemon.minIvs[s]}">
+                        </p:spinner>
+                    </c:forEach>
+                    <p:commandButton value="Test" action="#{addPokemonBean.test}"
+                        update="testStats" />
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset id="testStats" legend="Test Stats">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="test#{s.code}">${s.fullName}:</p:outputLabel>
+                        <h:outputText id="test#{s.code}"
+                            value="#{addPokemonBean.testPokemon.lastCheckpoint.stats[s]}" />
+                    </c:forEach>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Current Stats">
+                <h:panelGrid columns="3" cellpadding="5">
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="current#{s.code}">${s.fullName}:</p:outputLabel>
+                        <p:spinner id="current#{s.code}" size="3" min="0" max="999"
+                            converter="javax.faces.Integer"
+                            value="#{addPokemonBean.newPokemon.lastCheckpoint.stats[s]}">
+                            <f:ajax event="blur" render="current#{s.code}Msg" />
+                        </p:spinner>
+                        <p:message id="current#{s.code}Msg" for="current#{s.code}" />
+                    </c:forEach>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Initial EVs">
+                <h:panelGrid columns="3" cellpadding="5">
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="ev#{s.code}">${s.fullName}:</p:outputLabel>
+                        <p:spinner id="ev#{s.code}" size="3" min="0" max="999"
+                            converter="javax.faces.Integer"
+                            value="#{addPokemonBean.initEVs[s]}">
+                            <f:ajax event="blur" render="ev#{s.code}Msg" />
+                        </p:spinner>
+                        <p:message id="ev#{s.code}Msg" for="ev#{s.code}" />
+                    </c:forEach>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset id="ivsFieldset" legend="Calculated IVs">
+                <h:panelGrid rendered="#{!addPokemonBean.ivsCalculated}" columns="1"
+                    cellpadding="5">
+                    <p:commandButton value="Calculate"
+                        action="#{addPokemonBean.calculateIVs}" update="ivsFieldset" />
+                </h:panelGrid>
+                <h:panelGrid rendered="#{addPokemonBean.ivsCalculated}" columns="2"
+                    cellpadding="5">
+                    <c:forEach var="s" items="${data.stats}">
+                        <p:outputLabel for="iv#{s.code}">${s.fullName}:</p:outputLabel>
+                        <h:outputText id="iv#{s.code}"
+                            value="#{addPokemonBean.newPokemon.minIvs[s]} - #{addPokemonBean.newPokemon.maxIvs[s]}" />
+                    </c:forEach>
+                    <p:commandButton value="Finish"
+                        disabled="#{!addPokemonBean.ivsConsistent}"
+                        action="#{addPokemonBean.create}" update="ivsFieldset" />
+                    <p:commandButton value="Recalculate"
+                        action="#{addPokemonBean.calculateIVs}" update="ivsFieldset" />
+                </h:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

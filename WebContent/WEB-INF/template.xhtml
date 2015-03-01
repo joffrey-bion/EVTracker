@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="utf-8" />
+    <title>EVT - <ui:insert name="title">Default Title</ui:insert></title>
+    <link rel="shortcut icon" type="image/x-icon"
+        href="#{resource['default:img/icons/pokeball1.ico']}" />
+    <h:outputStylesheet library="default" name="css/style.css" />
+</h:head>
+<h:body>
+    <header>
+        <p:panel>
+            <img id="pokemon_logo" src="#{resource['default:img/logos/pokemon_logo.png']}"
+                height="50px" />
+            <img id="logo" src="#{resource['default:img/logos/logo2.png']}" height="50px"
+                alt="EVs Tracker" />
+        </p:panel>
+    </header>
+    <nav>
+        <h:form>
+            <p:menubar id="nav-menu" activeIndex="1">
+                <p:menuitem value="Dashboard" url="/dashboard.xhtml" icon="ui-icon-video" />
+                <p:submenu label="Calculators" icon="ui-icon-wrench">
+                    <p:menuitem value="IVs Calculator" />
+                    <p:menuitem value="EVs Calculator" />
+                </p:submenu>
+                <p:menuitem value="Species" url="/species.xhtml" icon="ui-icon-search" />
+                <p:menuitem value="Users" url="/users.xhtml" icon="ui-icon-person" />
+            </p:menubar>
+            <h:outputText rendered="#{sessionScope.user == null}" value="Please log in" />
+            <h:outputText rendered="#{sessionScope.user != null}"
+                value="Logged In as #{sessionScope.user.login}" />
+        </h:form>
+    </nav>
+    <section id="content-container">
+        <ui:insert name="content">Default Content</ui:insert>
+    </section>
+    <footer>
+        <p:panel>
+            <h:outputText value="By Joffrey Bion" />
+        </p:panel>
+    </footer>
+</h:body>
+</html>
