@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -18,7 +19,7 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class UploadBean implements Serializable {
 
-    private static final String PATH_PROPERTIES_FILE = "/com/joffrey_bion/web/evstracker/beans/paths.properties";
+    private static final String PATH_PROPERTIES_FILE = "/com/jbion/web/evstracker/beans/paths.properties";
     private static final String PROP_UPLOAD = "uploadLocation";
 
     private static final int BUFFER_SIZE = 10240;
@@ -46,22 +47,18 @@ public class UploadBean implements Serializable {
     private static String retrieveFullPath() {
         Properties properties = new Properties();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream propertiesFile = classLoader.getResourceAsStream(PATH_PROPERTIES_FILE);
-        if (propertiesFile == null) {
-            throw new RuntimeException("Paths properties file " + PATH_PROPERTIES_FILE
-                    + " not found.");
-        }
-        String url;
-        try {
+        String url = null;
+        try (InputStream propertiesFile = classLoader.getResourceAsStream(PATH_PROPERTIES_FILE)) {
+            if (propertiesFile == null) {
+                throw new RuntimeException("Paths properties file " + PATH_PROPERTIES_FILE + " not found.");
+            }
             properties.load(propertiesFile);
             url = properties.getProperty(PROP_UPLOAD);
-            propertiesFile.close();
         } catch (IllegalArgumentException iae) {
             throw new RuntimeException("Incorrect path properties file " + PATH_PROPERTIES_FILE + ": "
                     + iae.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException("Paths properties file " + PATH_PROPERTIES_FILE
-                    + " could not be loaded.", e);
+            throw new RuntimeException("Paths properties file " + PATH_PROPERTIES_FILE + " could not be loaded.", e);
         }
         return url;
     }
