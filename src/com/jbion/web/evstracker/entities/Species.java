@@ -1,6 +1,15 @@
 package com.jbion.web.evstracker.entities;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,17 +34,16 @@ public class Species {
     private String name;
 
     @Column(name = "version")
-    @NotNull(message = "Species version required")
     private String version;
 
     @Embedded
     @Valid
     @AttributeOverrides({@AttributeOverride(name = "hp", column = @Column(name = "base_hp")),
-        @AttributeOverride(name = "att", column = @Column(name = "base_att")),
-        @AttributeOverride(name = "def", column = @Column(name = "base_def")),
-        @AttributeOverride(name = "spa", column = @Column(name = "base_spa")),
-        @AttributeOverride(name = "spd", column = @Column(name = "base_spd")),
-        @AttributeOverride(name = "spe", column = @Column(name = "base_spe"))})
+            @AttributeOverride(name = "att", column = @Column(name = "base_att")),
+            @AttributeOverride(name = "def", column = @Column(name = "base_def")),
+            @AttributeOverride(name = "spa", column = @Column(name = "base_spa")),
+            @AttributeOverride(name = "spd", column = @Column(name = "base_spd")),
+            @AttributeOverride(name = "spe", column = @Column(name = "base_spe"))})
     private Stats baseStats;
 
     public Species() {
@@ -83,6 +91,22 @@ public class Species {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public boolean hasVersion() {
+        return version != null && version.length() > 0;
+    }
+
+    public String getFullName() {
+        return name + (hasVersion() ? " (" + version + ")" : "");
     }
 
     public Stats getBaseStats() {

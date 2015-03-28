@@ -59,10 +59,11 @@
                     <p:column>
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="#{sp.name}" />
+                                <h:outputText value="#{sp.fullName}" />
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{sp.name}" />
+                                <p:inputText value="#{sp.name}" placeholder="Name"/>
+                                <p:inputText value="#{sp.version}" placeholder="Special version" />
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -111,14 +112,14 @@
                                 name="img/pkmn/#{speciesBean.selectedSpecies.imgName}.jpg" />
                         </f:facet>
                         <h:outputText
-                            value="#{speciesBean.selectedSpecies.num3Digits} - #{speciesBean.selectedSpecies.name}"
+                            value="#{speciesBean.selectedSpecies.num3Digits} - #{speciesBean.selectedSpecies.fullName}"
                             style="font-weight:bold" />
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
         </section>
         <aside>
-            <h:form id="form" rendered="false">
+            <h:form id="form">
                 <p:fieldset legend="Add a species">
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="pokedexNum">Pokédex #</p:outputLabel>
@@ -136,6 +137,12 @@
                             <f:validator validatorId="speciesNameExistValidator" />
                         </p:inputText>
                         <p:message id="speciesNameMsg" for="speciesName" />
+                        <p:outputLabel for="version">Version</p:outputLabel>
+                        <p:inputText id="version" placeholder="optional"
+                            value="#{speciesBean.newSpecies.version}">
+                            <f:ajax event="blur" render="versionMsg" />
+                        </p:inputText>
+                        <p:message id="versionMsg" for="version" />
                         <c:forEach var="s" items="${data.stats}">
                             <p:outputLabel for="base#{s.code}">Base ${s.fullName}</p:outputLabel>
                             <p:spinner id="base#{s.code}" size="3" min="0" max="999"
