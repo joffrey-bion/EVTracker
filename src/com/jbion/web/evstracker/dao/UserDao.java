@@ -3,10 +3,10 @@ package com.jbion.web.evstracker.dao;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -18,12 +18,12 @@ public class UserDao {
 
     private static final String PARAM_EMAIL = "email";
     private static final String PARAM_LOGIN = "login";
-    
+
     private static final String JPQL_COUNT_ALL = "SELECT COUNT(u) FROM User u";
     private static final String JPQL_SELECT_ALL = "SELECT u FROM User u ORDER BY u.login";
     private static final String JPQL_SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email=:" + PARAM_EMAIL;
     private static final String JPQL_SELECT_BY_LOGIN = "SELECT u FROM User u WHERE u.login=:" + PARAM_LOGIN;
-    
+
     @PersistenceContext(unitName = "pokemon_db_PU")
     private EntityManager em;
 
