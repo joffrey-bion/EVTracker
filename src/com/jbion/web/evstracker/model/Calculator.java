@@ -1,7 +1,5 @@
 package com.jbion.web.evstracker.model;
 
-import java.util.HashMap;
-
 import com.jbion.web.evstracker.entities.Pokemon;
 import com.jbion.web.evstracker.entities.Stats;
 
@@ -17,8 +15,8 @@ public class Calculator {
         Stats maxIvs = pokemon.getMaxIvs();
         Nature nature = pokemon.getNature();
         int level = pokemon.getLastCheckpoint().getLevel();
-        HashMap<Stat, Integer> baseStats = pokemon.getSpecies().getBaseStats();
-        HashMap<Stat, Integer> currStats = pokemon.getLastCheckpoint().getStats();
+        Stats baseStats = pokemon.getSpecies().getBaseStats();
+        Stats currStats = pokemon.getLastCheckpoint().getStats();
         for (Stat stat : Stat.values()) {
             int[] iv = getIV(baseStats.get(stat), currStats.get(stat), evs.get(stat), level, stat, nature);
             minIvs.put(stat, iv[0]);
@@ -31,8 +29,8 @@ public class Calculator {
         Stats maxIvs = pokemon.getMaxIvs();
         Nature nature = pokemon.getNature();
         int level = pokemon.getLastCheckpoint().getLevel();
-        HashMap<Stat, Integer> baseStats = pokemon.getSpecies().getBaseStats();
-        HashMap<Stat, Integer> currStats = pokemon.getLastCheckpoint().getStats();
+        Stats baseStats = pokemon.getSpecies().getBaseStats();
+        Stats currStats = pokemon.getLastCheckpoint().getStats();
         Stats minEvs = new Stats();
         Stats maxEvs = new Stats();
         for (Stat stat : Stat.values()) {
@@ -49,8 +47,8 @@ public class Calculator {
     public static void calculateStats(Pokemon pokemon) {
         Nature nature = pokemon.getNature();
         int level = pokemon.getLastCheckpoint().getLevel();
-        HashMap<Stat, Integer> baseStats = pokemon.getSpecies().getBaseStats();
-        HashMap<Stat, Integer> currStats = pokemon.getLastCheckpoint().getStats();
+        Stats baseStats = pokemon.getSpecies().getBaseStats();
+        Stats currStats = pokemon.getLastCheckpoint().getStats();
         // convention min IVs when they are known
         Stats ivs = pokemon.getMinIvs();
         for (Stat stat : Stat.values()) {
