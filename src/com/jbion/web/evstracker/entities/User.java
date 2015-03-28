@@ -18,8 +18,6 @@ import javax.validation.constraints.Size;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
-import com.jbion.web.evstracker.entities.Pokemon;
-
 @Entity
 @Table(name = "Users")
 public class User implements Serializable {
@@ -27,14 +25,14 @@ public class User implements Serializable {
     private static final String ENCRYPT_ALGORITHM = "SHA-256";
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    
+
     @Column(name = "login")
     @NotNull(message = "Username required")
     @Size(min = 3, max = 20, message = "The username must be 3 to 20 character long.")
-    @Pattern(regexp = "[a-zA-Z���������]+", message = "Incorrect username (only standard letters allowed)")
+    @Pattern(regexp = "[a-zA-Z]+", message = "Incorrect username (only standard letters allowed)")
     private String login;
 
     @Column(name = "email")
@@ -61,7 +59,7 @@ public class User implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getLogin() {
         return login;
     }
@@ -81,14 +79,14 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm(ENCRYPT_ALGORITHM);
         passwordEncryptor.setPlainDigest(false);
         this.password = passwordEncryptor.encryptPassword(password);
     }
-    
+
     public boolean isPasswordCorrect(String plainPassword) {
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm(ENCRYPT_ALGORITHM);
