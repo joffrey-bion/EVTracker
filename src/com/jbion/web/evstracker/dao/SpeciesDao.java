@@ -15,6 +15,7 @@ import com.jbion.web.evstracker.entities.Species;
 @Stateless
 public class SpeciesDao {
 
+    private static final String PARAM_NUM = "pokedexNumber";
     private static final String PARAM_NAME = "name";
     private static final String PARAM_MIN = "min";
     private static final String PARAM_MAX = "max";
@@ -22,8 +23,8 @@ public class SpeciesDao {
 
     private static final String JPQL_COUNT_ALL = "SELECT COUNT(s) FROM Species s";
     private static final String JPQL_SELECT_ALL = "SELECT s FROM Species s ORDER BY s.pokedexNum";
-    private static final String JPQL_SELECT_BY_NAME = "SELECT s FROM Species s WHERE s.name=:"
-            + PARAM_NAME;
+    private static final String JPQL_SELECT_BY_NUM = "SELECT s FROM Species s WHERE s.pokedexNum=:" + PARAM_NUM;
+    private static final String JPQL_SELECT_BY_NAME = "SELECT s FROM Species s WHERE s.name=:" + PARAM_NAME;
     private static final String JPQL_SELECT_BY_NAME_START = "SELECT s FROM Species s WHERE s.name LIKE CONCAT(:"
             + PARAM_BEGINNING + " , '%')";
     private static final String JPQL_SELECT_BY_NUM_RANGE = "SELECT s FROM Species s WHERE s.pokedexNum >= :"
@@ -33,11 +34,8 @@ public class SpeciesDao {
     private static final String JPQL_SELECT_BY_NUM_START_MAX = "SELECT s FROM Species s WHERE s.pokedexNum <= :"
             + PARAM_MAX + " AND s.pokedexNum LIKE CONCAT(:" + PARAM_BEGINNING + " , '%')";
     private static final String JPQL_SELECT_BY_NUM_START_MAX_MIN = "SELECT s FROM Species s WHERE s.pokedexNum >= :"
-            + PARAM_MIN
-            + " AND s.pokedexNum <= :"
-            + PARAM_MAX
-            + " AND s.pokedexNum LIKE CONCAT(:"
-            + PARAM_BEGINNING + " , '%')";
+            + PARAM_MIN + " AND s.pokedexNum <= :" + PARAM_MAX + " AND s.pokedexNum LIKE CONCAT(:" + PARAM_BEGINNING
+            + " , '%')";
 
     @PersistenceContext(unitName = "pokemon_db_PU")
     private EntityManager em;
@@ -78,7 +76,7 @@ public class SpeciesDao {
 
     public void deleteByID(Integer pokedexNumber) {
         try {
-            delete(findByPokedexNum(pokedexNumber));
+            delete(findFirstByPokedexNum(pokedexNumber));
         } catch (Exception e) {
             throw new DaoException(e);
         }
@@ -92,21 +90,74 @@ public class SpeciesDao {
         }
     }
 
-    public Species findByName(String speciesName) {
+    public Species findById(Integer speciesId) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME, Species.class);
-            query.setParameter(PARAM_NAME, speciesName);
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
+            return em.find(Species.class, speciesId);
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
 
-    public Species findByPokedexNum(Integer pokedexNumber) {
+    /**
+     * Returns the first species matching the given name.
+     *
+     * @param speciesName
+     *            the name of the species
+     * @return the first species matching the given pokedex number
+     * @deprecated the name does not identify uniquely a species, the same species could exist in
+     *             different versions, all with the same name
+     */
+    @Deprecated
+    public Species findFirstByName(String speciesName) {
         try {
-            return em.find(Species.class, pokedexNumber);
+            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME, Species.class);
+            query.setParameter(PARAM_NAME, speciesName);
+            List<Species> result = query.getResultList();
+            if (result.isEmpty()) {
+                return null;
+            }
+            return result.get(0);
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
+    /**
+     * Returns the first species matching the given pokedex number.
+     *
+     * @param pokedexNumber
+     *            the pokedex number of the species
+     * @return the first species matching the given pokedex number
+     * @deprecated the pokedexNumber does not identify uniquely a species, the same species could
+     *             exist in different versions, all with the same pokedex number
+     */
+    @Deprecated
+    public Species findFirstByPokedexNum(Integer pokedexNumber) {
+        try {
+            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
+            query.setParameter(PARAM_NUM, pokedexNumber);
+            List<Species> result = query.getResultList();
+            if (result.isEmpty()) {
+                return null;
+            }
+            return result.get(0);
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
+    /**
+     * Returns the species matching the given pokedex number. Multiple species may match.
+     *
+     * @param pokedexNumber
+     *            the pokedex number of the species
+     * @return the species matching the given pokedex number
+     */
+    public List<Species> findByPokedexNum(Integer pokedexNumber) {
+        try {
+            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
+            query.setParameter(PARAM_NUM, pokedexNumber);
+            return query.getResultList();
         } catch (Exception e) {
             throw new DaoException(e);
         }

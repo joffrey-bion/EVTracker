@@ -14,12 +14,11 @@ public class SpeciesConverter implements Converter {
 
     @EJB
     private SpeciesDao speciesDao;
-    
+
     @Override
-    public Object getAsObject(FacesContext facesContext, UIComponent component,
-            String submittedValue) {
+    public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         System.out.println("species converter getAsObject('" + submittedValue + "')");
-        return speciesDao.findByName(submittedValue);
+        return speciesDao.findFirstByName(submittedValue);
     }
 
     @Override

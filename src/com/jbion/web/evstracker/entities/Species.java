@@ -11,18 +11,25 @@ import javax.validation.constraints.NotNull;
 public class Species {
 
     @Id
+    @Column(name = "species_id")
+    private Integer id;
+
     @Column(name = "pokedex_number")
-    @NotNull(message = "Pok�dex number required")
-    @Min(value = 1, message = "The pok�dex number can't be below 1.")
-    @Max(value = 999, message = "The pok�dex number can't be above 999.")
+    @NotNull(message = "Pokedex number required")
+    @Min(value = 1, message = "The pokedex number can't be below 1.")
+    @Max(value = 999, message = "The pokedex number can't be above 999.")
     private Integer pokedexNum;
 
     @Column(name = "name")
     @NotNull(message = "Species name required")
     private String name;
 
-    @Valid
+    @Column(name = "version")
+    @NotNull(message = "Species version required")
+    private String version;
+
     @Embedded
+    @Valid
     @AttributeOverrides({ @AttributeOverride(name = "hp", column = @Column(name = "base_hp")),
             @AttributeOverride(name = "att", column = @Column(name = "base_att")),
             @AttributeOverride(name = "def", column = @Column(name = "base_def")),
@@ -30,7 +37,7 @@ public class Species {
             @AttributeOverride(name = "spd", column = @Column(name = "base_spd")),
             @AttributeOverride(name = "spe", column = @Column(name = "base_spe")) })
     private Stats baseStats;
-    
+
     public Species() {
         baseStats = new Stats();
     }
@@ -45,13 +52,21 @@ public class Species {
     private void postLoad() {
         baseStats.postLoad();
     }
-    
+
     public String getNum3Digits() {
         return String.format("%03d", pokedexNum);
     }
-    
+
     public String getImgName() {
         return getNum3Digits();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getPokedexNum() {

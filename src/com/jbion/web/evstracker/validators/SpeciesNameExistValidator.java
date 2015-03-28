@@ -24,7 +24,7 @@ public class SpeciesNameExistValidator implements Validator {
             throws ValidatorException {
         String speciesName = (String) value;
         try {
-            if (speciesName != null && !speciesName.equals("") && speciesDao.findByName(speciesName) != null) {
+            if (speciesName != null && !speciesName.equals("") && speciesDao.findFirstByName(speciesName) != null) {
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
                         SPECIES_NAME_ALREADY_EXISTS_MSG, null));
             }
