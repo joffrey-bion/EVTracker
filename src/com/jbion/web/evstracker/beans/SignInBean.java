@@ -19,7 +19,7 @@ import com.jbion.web.evstracker.entities.User;
 @ManagedBean
 @ViewScoped
 public class SignInBean implements Serializable {
-    
+
     private static final String DEFAULT_REDIRECT_URL_AFTER_SIGNIN = "/dashboard.xhtml";
 
     private String login;
@@ -31,14 +31,13 @@ public class SignInBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        originalURL = (String) externalContext.getRequestMap().get(
-                RequestDispatcher.FORWARD_REQUEST_URI);
+        final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        originalURL = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
 
         if (originalURL == null) {
             originalURL = externalContext.getRequestContextPath() + DEFAULT_REDIRECT_URL_AFTER_SIGNIN;
         } else {
-            String originalQuery = (String) externalContext.getRequestMap().get(
+            final String originalQuery = (String) externalContext.getRequestMap().get(
                     RequestDispatcher.FORWARD_QUERY_STRING);
 
             if (originalQuery != null) {
@@ -48,11 +47,11 @@ public class SignInBean implements Serializable {
     }
 
     public void signIn() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
+        final FacesContext context = FacesContext.getCurrentInstance();
+        final ExternalContext externalContext = context.getExternalContext();
         FacesMessage message = null;
         try {
-            User user = userDao.findByLogin(login);
+            final User user = userDao.findByLogin(login);
             if (user == null) {
                 externalContext.getSessionMap().remove("user");
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown username", "Please join us!");
@@ -66,12 +65,12 @@ public class SignInBean implements Serializable {
                 message = new FacesMessage("Welcome back, " + login + "!");
                 System.out.println("Login successful for " + login);
             }
-        } catch (DaoException e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected database error: " + e.getMessage());
-        } catch (IOException e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected I/O error: " + e.getMessage());
+        } catch (final DaoException e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected database error: "
+                    + e.getMessage());
+        } catch (final IOException e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected I/O error: "
+                    + e.getMessage());
         } finally {
             FacesContext.getCurrentInstance().addMessage("signInForm", message);
         }
@@ -80,20 +79,15 @@ public class SignInBean implements Serializable {
     /*
      * public void login() throws IOException { FacesContext context =
      * FacesContext.getCurrentInstance(); ExternalContext externalContext =
-     * context.getExternalContext(); HttpServletRequest request =
-     * (HttpServletRequest) externalContext.getRequest();
-     * 
-     * try { request.login(login, password); User user = userDao.find(login,
-     * password); externalContext.getSessionMap().put("user", user);
-     * externalContext.redirect(originalURL); } catch (ServletException e) { //
-     * Handle unknown username/password in request.login(). context.addMessage(null,
-     * new FacesMessage("Unknown login")); } }
-     * 
-     * public void logout() throws IOException { ExternalContext externalContext =
-     * FacesContext.getCurrentInstance().getExternalContext();
+     * context.getExternalContext(); HttpServletRequest request = (HttpServletRequest)
+     * externalContext.getRequest(); try { request.login(login, password); User user =
+     * userDao.find(login, password); externalContext.getSessionMap().put("user", user);
+     * externalContext.redirect(originalURL); } catch (ServletException e) { // Handle unknown
+     * username/password in request.login(). context.addMessage(null, new
+     * FacesMessage("Unknown login")); } } public void logout() throws IOException { ExternalContext
+     * externalContext = FacesContext.getCurrentInstance().getExternalContext();
      * externalContext.invalidateSession();
-     * externalContext.redirect(externalContext.getRequestContextPath() +
-     * "/login.xhtml"); }
+     * externalContext.redirect(externalContext.getRequestContextPath() + "/login.xhtml"); }
      */
     public String getLogin() {
         return login;

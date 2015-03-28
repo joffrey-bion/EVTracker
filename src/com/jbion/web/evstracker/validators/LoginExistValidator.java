@@ -20,17 +20,15 @@ public class LoginExistValidator implements Validator {
     private UserDao userDao;
 
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value)
-            throws ValidatorException {
-        String login = (String) value;
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        final String login = (String) value;
         try {
             if (login != null && userDao.findByLogin(login) != null) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        LOGIN_ALREADY_EXISTS_MSG, null));
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LOGIN_ALREADY_EXISTS_MSG,
+                        null));
             }
-        } catch (DaoException e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),
-                    null);
+        } catch (final DaoException e) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
             context.addMessage(component.getClientId(context), message);
         }
     }

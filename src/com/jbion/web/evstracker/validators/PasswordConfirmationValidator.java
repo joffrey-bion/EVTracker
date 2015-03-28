@@ -15,16 +15,14 @@ public class PasswordConfirmationValidator implements Validator {
     private static final String MSG_DIFFERENT_PASSWORDS = "The password and confirmation have to match.";
 
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value)
-            throws ValidatorException {
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        UIInput passwordComponent = (UIInput) component.getAttributes().get(PASSWORD_FIELD);
-        String password = (String) passwordComponent.getValue();
-        String confirmation = (String) value;
+        final UIInput passwordComponent = (UIInput) component.getAttributes().get(PASSWORD_FIELD);
+        final String password = (String) passwordComponent.getValue();
+        final String confirmation = (String) value;
 
         if (confirmation != null && !confirmation.equals(password)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    MSG_DIFFERENT_PASSWORDS, null));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, MSG_DIFFERENT_PASSWORDS, null));
         }
     }
 

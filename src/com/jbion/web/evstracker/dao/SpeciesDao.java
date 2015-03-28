@@ -42,18 +42,18 @@ public class SpeciesDao {
 
     public int getTotalNumber() {
         try {
-            Query query = em.createQuery(JPQL_COUNT_ALL);
+            final Query query = em.createQuery(JPQL_COUNT_ALL);
             return ((Number) query.getSingleResult()).intValue();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
 
     public List<Species> list() {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_ALL, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_ALL, Species.class);
             return query.getResultList();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -61,7 +61,7 @@ public class SpeciesDao {
     public void create(Species species) {
         try {
             em.persist(species);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -69,7 +69,7 @@ public class SpeciesDao {
     public void delete(Species species) {
         try {
             em.remove(em.merge(species));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -77,7 +77,7 @@ public class SpeciesDao {
     public void deleteByID(Integer pokedexNumber) {
         try {
             delete(findFirstByPokedexNum(pokedexNumber));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -85,7 +85,7 @@ public class SpeciesDao {
     public void update(Species s) {
         try {
             em.merge(s);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -93,7 +93,7 @@ public class SpeciesDao {
     public Species findById(Integer speciesId) {
         try {
             return em.find(Species.class, speciesId);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -110,14 +110,14 @@ public class SpeciesDao {
     @Deprecated
     public Species findFirstByName(String speciesName) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME, Species.class);
             query.setParameter(PARAM_NAME, speciesName);
-            List<Species> result = query.getResultList();
+            final List<Species> result = query.getResultList();
             if (result.isEmpty()) {
                 return null;
             }
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -134,14 +134,14 @@ public class SpeciesDao {
     @Deprecated
     public Species findFirstByPokedexNum(Integer pokedexNumber) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
             query.setParameter(PARAM_NUM, pokedexNumber);
-            List<Species> result = query.getResultList();
+            final List<Species> result = query.getResultList();
             if (result.isEmpty()) {
                 return null;
             }
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -155,35 +155,35 @@ public class SpeciesDao {
      */
     public List<Species> findByPokedexNum(Integer pokedexNumber) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM, Species.class);
             query.setParameter(PARAM_NUM, pokedexNumber);
             return query.getResultList();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
 
     public List<Species> findByPokedexNumRange(int min, int max) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM_RANGE, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NUM_RANGE, Species.class);
             query.setParameter(PARAM_MIN, min);
             query.setParameter(PARAM_MAX, max);
             return query.getResultList();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return new LinkedList<>();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
 
     public List<Species> findByNameBeginning(String nameBeginning) {
         try {
-            TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME_START, Species.class);
+            final TypedQuery<Species> query = em.createQuery(JPQL_SELECT_BY_NAME_START, Species.class);
             query.setParameter(PARAM_BEGINNING, nameBeginning);
             return query.getResultList();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return new LinkedList<>();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -210,9 +210,9 @@ public class SpeciesDao {
                 query.setParameter(PARAM_BEGINNING, numBeginning);
             }
             return query.getResultList();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return new LinkedList<>();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }

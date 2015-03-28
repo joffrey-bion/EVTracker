@@ -21,14 +21,14 @@ public class PokedexNumExistValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        Integer pokedexNum = (Integer) value;
+        final Integer pokedexNum = (Integer) value;
         try {
             if (pokedexNum != null && speciesDao.findFirstByPokedexNum(pokedexNum) != null) {
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
                         POKEDEX_NUM_ALREADY_EXISTS_MSG, null));
             }
-        } catch (DaoException e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
+        } catch (final DaoException e) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
             context.addMessage(component.getClientId(context), message);
         }
     }

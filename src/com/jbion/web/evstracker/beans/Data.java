@@ -13,7 +13,7 @@ public class Data {
     public Stat[] getStats() {
         return Stat.values();
     }
-    
+
     public int getNbStats() {
         return Stat.values().length;
     }

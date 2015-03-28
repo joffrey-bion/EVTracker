@@ -21,7 +21,7 @@ public class SpeciesBean implements Serializable {
 
     private static final String MSG_ID_NEW_SPECIES_FORM = "newSpeciesForm";
     private static final String MSG_ID_TABLE = "tableMsg";
-    
+
     private Species newSpecies;
 
     private Species selectedSpecies;
@@ -36,7 +36,7 @@ public class SpeciesBean implements Serializable {
         newSpecies = new Species();
         refreshModel();
     }
-    
+
     private void refreshModel() {
         allSpecies = speciesDao.list();
         nbSpecies = speciesDao.getTotalNumber();
@@ -47,11 +47,11 @@ public class SpeciesBean implements Serializable {
         try {
             speciesDao.create(newSpecies);
             refreshModel();
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "The species "
-                    + newSpecies.getName() + " was successfully created.");
-        } catch (Exception e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected database error: " + e.getMessage());
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "The species " + newSpecies.getName()
+                    + " was successfully created.");
+        } catch (final Exception e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected database error: "
+                    + e.getMessage());
         } finally {
             FacesContext.getCurrentInstance().addMessage(MSG_ID_NEW_SPECIES_FORM, message);
         }
@@ -62,33 +62,33 @@ public class SpeciesBean implements Serializable {
         try {
             speciesDao.deleteByID(s.getPokedexNum());
             refreshModel();
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "The species "
-                    + s.getName() + " was successfully deleted.");
-        } catch (Exception e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected database error: " + e.getMessage());
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "The species " + s.getName()
+                    + " was successfully deleted.");
+        } catch (final Exception e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected database error: "
+                    + e.getMessage());
         } finally {
             FacesContext.getCurrentInstance().addMessage(MSG_ID_TABLE, message);
         }
     }
 
     public void onEdit(RowEditEvent event) {
-        Species s = (Species) event.getObject();
+        final Species s = (Species) event.getObject();
         try {
             speciesDao.update(s);
             refreshModel();
-            FacesMessage msg = new FacesMessage("Edits on " + s + " saved");
+            final FacesMessage msg = new FacesMessage("Edits on " + s + " saved");
             FacesContext.getCurrentInstance().addMessage(MSG_ID_TABLE, msg);
-        } catch (Exception e) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Edits on " + s
+        } catch (final Exception e) {
+            final FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Edits on " + s
                     + " could not be saved", "Database error: " + e.getMessage());
             FacesContext.getCurrentInstance().addMessage(MSG_ID_TABLE, msg);
         }
     }
 
     public void onCancel(RowEditEvent event) {
-        Species s = (Species) event.getObject();
-        FacesMessage msg = new FacesMessage("Edits on " + s + " cancelled");
+        final Species s = (Species) event.getObject();
+        final FacesMessage msg = new FacesMessage("Edits on " + s + " cancelled");
         FacesContext.getCurrentInstance().addMessage(MSG_ID_TABLE, msg);
     }
 

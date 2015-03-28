@@ -36,10 +36,10 @@ public class Stats extends HashMap<Stat, Integer> {
     @Min(value = 0)
     @Max(value = 999)
     private Integer spe;
-    
+
     public Stats() {
         super();
-        for (Stat s : Stat.values()) {
+        for (final Stat s : Stat.values()) {
             put(s, 0);
         }
     }

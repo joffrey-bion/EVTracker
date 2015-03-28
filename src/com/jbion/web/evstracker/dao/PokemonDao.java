@@ -10,7 +10,7 @@ import com.jbion.web.evstracker.entities.Pokemon;
 public class PokemonDao {
     public void create(Pokemon pokemon) throws DaoException {
         // TODO Auto-generated method stub
-        
+
     }
 
     public Pokemon findByID(Long id) throws DaoException {
@@ -25,12 +25,12 @@ public class PokemonDao {
 
     public void deleteByID(Long pokemonId) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void delete(Pokemon pokemon) {
         // TODO Auto-generated method stub
-        
+
     }
 
     // TODO complete

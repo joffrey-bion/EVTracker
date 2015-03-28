@@ -13,7 +13,7 @@ import com.jbion.web.evstracker.entities.User;
 @ManagedBean
 @ViewScoped
 public class UsersBean {
-    
+
     private Integer nbUsers;
     private List<User> users;
 

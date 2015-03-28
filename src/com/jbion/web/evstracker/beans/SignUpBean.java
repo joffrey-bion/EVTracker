@@ -34,16 +34,16 @@ public class SignUpBean implements Serializable {
         try {
             userDao.create(user);
             message = new FacesMessage("Welcome, " + user.getLogin() + "!");
-        } catch (DaoException e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected database error: " + e.getMessage());
+        } catch (final DaoException e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected database error: "
+                    + e.getMessage());
         } finally {
             FacesContext.getCurrentInstance().addMessage("signUpForm", message);
         }
     }
 
     private void initSignupDate() {
-        Timestamp date = new Timestamp(System.currentTimeMillis());
+        final Timestamp date = new Timestamp(System.currentTimeMillis());
         user.setSignUpDate(date);
     }
 

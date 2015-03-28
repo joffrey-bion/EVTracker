@@ -52,7 +52,7 @@ public enum Nature {
     }
 
     public String getDisplayName() {
-        String name = name();
+        final String name = name();
         return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 

@@ -30,12 +30,12 @@ public class Species {
 
     @Embedded
     @Valid
-    @AttributeOverrides({ @AttributeOverride(name = "hp", column = @Column(name = "base_hp")),
-            @AttributeOverride(name = "att", column = @Column(name = "base_att")),
-            @AttributeOverride(name = "def", column = @Column(name = "base_def")),
-            @AttributeOverride(name = "spa", column = @Column(name = "base_spa")),
-            @AttributeOverride(name = "spd", column = @Column(name = "base_spd")),
-            @AttributeOverride(name = "spe", column = @Column(name = "base_spe")) })
+    @AttributeOverrides({@AttributeOverride(name = "hp", column = @Column(name = "base_hp")),
+        @AttributeOverride(name = "att", column = @Column(name = "base_att")),
+        @AttributeOverride(name = "def", column = @Column(name = "base_def")),
+        @AttributeOverride(name = "spa", column = @Column(name = "base_spa")),
+        @AttributeOverride(name = "spd", column = @Column(name = "base_spd")),
+        @AttributeOverride(name = "spe", column = @Column(name = "base_spe"))})
     private Stats baseStats;
 
     public Species() {

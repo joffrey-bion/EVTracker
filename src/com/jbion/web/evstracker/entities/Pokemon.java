@@ -31,24 +31,24 @@ public class Pokemon {
 
     @Embedded
     @Valid
-    @AttributeOverrides({ @AttributeOverride(name = "hp", column = @Column(name = "iv_min_hp")),
-            @AttributeOverride(name = "att", column = @Column(name = "iv_min_att")),
-            @AttributeOverride(name = "def", column = @Column(name = "iv_min_def")),
-            @AttributeOverride(name = "spa", column = @Column(name = "iv_min_spa")),
-            @AttributeOverride(name = "spd", column = @Column(name = "iv_min_spd")),
-            @AttributeOverride(name = "spe", column = @Column(name = "iv_min_spe")) })
+    @AttributeOverrides({@AttributeOverride(name = "hp", column = @Column(name = "iv_min_hp")),
+        @AttributeOverride(name = "att", column = @Column(name = "iv_min_att")),
+        @AttributeOverride(name = "def", column = @Column(name = "iv_min_def")),
+        @AttributeOverride(name = "spa", column = @Column(name = "iv_min_spa")),
+        @AttributeOverride(name = "spd", column = @Column(name = "iv_min_spd")),
+        @AttributeOverride(name = "spe", column = @Column(name = "iv_min_spe"))})
     private Stats minIvs;
 
     @Embedded
     @Valid
-    @AttributeOverrides({ @AttributeOverride(name = "hp", column = @Column(name = "iv_max_hp")),
-            @AttributeOverride(name = "att", column = @Column(name = "iv_max_att")),
-            @AttributeOverride(name = "def", column = @Column(name = "iv_max_def")),
-            @AttributeOverride(name = "spa", column = @Column(name = "iv_max_spa")),
-            @AttributeOverride(name = "spd", column = @Column(name = "iv_max_spd")),
-            @AttributeOverride(name = "spe", column = @Column(name = "iv_max_spe")) })
+    @AttributeOverrides({@AttributeOverride(name = "hp", column = @Column(name = "iv_max_hp")),
+        @AttributeOverride(name = "att", column = @Column(name = "iv_max_att")),
+        @AttributeOverride(name = "def", column = @Column(name = "iv_max_def")),
+        @AttributeOverride(name = "spa", column = @Column(name = "iv_max_spa")),
+        @AttributeOverride(name = "spd", column = @Column(name = "iv_max_spd")),
+        @AttributeOverride(name = "spe", column = @Column(name = "iv_max_spe"))})
     private Stats maxIvs;
-    
+
     @JoinColumn(name = "last_checkpoint")
     @OneToOne
     @Valid

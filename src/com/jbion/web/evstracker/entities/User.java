@@ -81,14 +81,14 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        final ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm(ENCRYPT_ALGORITHM);
         passwordEncryptor.setPlainDigest(false);
         this.password = passwordEncryptor.encryptPassword(password);
     }
 
     public boolean isPasswordCorrect(String plainPassword) {
-        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        final ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm(ENCRYPT_ALGORITHM);
         passwordEncryptor.setPlainDigest(false);
         return passwordEncryptor.checkPassword(plainPassword, password);

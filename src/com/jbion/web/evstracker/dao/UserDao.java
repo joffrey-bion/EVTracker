@@ -29,18 +29,18 @@ public class UserDao {
 
     public Integer getTotalNumber() {
         try {
-            Query query = em.createQuery(JPQL_COUNT_ALL);
+            final Query query = em.createQuery(JPQL_COUNT_ALL);
             return ((Number) query.getSingleResult()).intValue();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
 
     public List<User> list() {
         try {
-            TypedQuery<User> query = em.createQuery(JPQL_SELECT_ALL, User.class);
+            final TypedQuery<User> query = em.createQuery(JPQL_SELECT_ALL, User.class);
             return query.getResultList();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -54,7 +54,7 @@ public class UserDao {
         System.out.println("User.create(" + user + ")");
         try {
             em.persist(user);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -63,7 +63,7 @@ public class UserDao {
         System.out.println("User.findByLogin(" + id + ")");
         try {
             return em.find(User.class, id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
     }
@@ -71,13 +71,13 @@ public class UserDao {
     public User findByEmail(String email) {
         System.out.println("User.findByEmail(" + email + ")");
         User user = null;
-        Query requete = em.createQuery(JPQL_SELECT_BY_EMAIL);
+        final Query requete = em.createQuery(JPQL_SELECT_BY_EMAIL);
         requete.setParameter(PARAM_EMAIL, email);
         try {
             user = (User) requete.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return null;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
         return user;
@@ -86,13 +86,13 @@ public class UserDao {
     public User findByLogin(String login) {
         System.out.println("User.findByEmail(" + login + ")");
         User user = null;
-        Query requete = em.createQuery(JPQL_SELECT_BY_LOGIN);
+        final Query requete = em.createQuery(JPQL_SELECT_BY_LOGIN);
         requete.setParameter(PARAM_LOGIN, login);
         try {
             user = (User) requete.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return null;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DaoException(e);
         }
         return user;

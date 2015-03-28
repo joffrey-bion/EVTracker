@@ -27,9 +27,9 @@ public class AddPokemonBean implements Serializable {
 
     private Pokemon newPokemon;
     private Pokemon testPokemon;
-    
+
     private Stats initEVs;
-    
+
     private boolean ivsCalculated;
     private boolean ivsConsistent;
 
@@ -54,7 +54,7 @@ public class AddPokemonBean implements Serializable {
             return speciesDao.findByNameBeginning(query);
         }
     }
-    
+
     public void calculateIVs() {
         Calculator.calculateIVs(newPokemon, initEVs);
         ivsCalculated = true;
@@ -68,25 +68,25 @@ public class AddPokemonBean implements Serializable {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Your "
                     + newPokemon.getNature().name().toLowerCase() + " " + newPokemon.getSpecies()
                     + " was successfully added.");
-        } catch (Exception e) {
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure",
-                    "Unexpected database error: " + e.getMessage());
+        } catch (final Exception e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failure", "Unexpected database error: "
+                    + e.getMessage());
         } finally {
             FacesContext.getCurrentInstance().addMessage(MSG_ID_NEW_POKEMON_FORM, message);
         }
     }
-    
+
     public void test() {
         testPokemon.setSpecies(newPokemon.getSpecies());
         testPokemon.setNature(newPokemon.getNature());
         testPokemon.getLastCheckpoint().setLevel(newPokemon.getLastCheckpoint().getLevel());
         Calculator.calculateStats(testPokemon);
     }
-    
+
     public void handleSelect(SelectEvent event) {
         // TODO nothing?
     }
-    
+
     public boolean isSelected() {
         return newPokemon.getSpecies() != null;
     }

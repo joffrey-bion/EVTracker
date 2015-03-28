@@ -45,8 +45,8 @@ public class UploadBean implements Serializable {
     }
 
     private static String retrieveFullPath() {
-        Properties properties = new Properties();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        final Properties properties = new Properties();
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         String url = null;
         try (InputStream propertiesFile = classLoader.getResourceAsStream(PATH_PROPERTIES_FILE)) {
             if (propertiesFile == null) {
@@ -54,17 +54,17 @@ public class UploadBean implements Serializable {
             }
             properties.load(propertiesFile);
             url = properties.getProperty(PROP_UPLOAD);
-        } catch (IllegalArgumentException iae) {
+        } catch (final IllegalArgumentException iae) {
             throw new RuntimeException("Incorrect path properties file " + PATH_PROPERTIES_FILE + ": "
                     + iae.getMessage());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Paths properties file " + PATH_PROPERTIES_FILE + " could not be loaded.", e);
         }
         return url;
     }
 
     public void handleUpload(FileUploadEvent event) {
-        UploadedFile uploadedFile = event.getFile();
+        final UploadedFile uploadedFile = event.getFile();
         filename = uploadedFile.getFileName();
         System.out.println("handleFileUpload(" + filename + ")");
         System.out.println("LE PATH = " + UPLOAD_PATH);
@@ -77,12 +77,12 @@ public class UploadBean implements Serializable {
             in = new BufferedInputStream(uploadedFile.getInputstream(), BUFFER_SIZE);
             file = new File(UPLOAD_PATH);
             out = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
-            byte[] buffer = new byte[BUFFER_SIZE];
+            final byte[] buffer = new byte[BUFFER_SIZE];
             int length;
             while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             if (file != null) {
                 file.delete();
@@ -91,11 +91,11 @@ public class UploadBean implements Serializable {
         } finally {
             try {
                 in.close();
-            } catch (IOException ignore) {
+            } catch (final IOException ignore) {
             }
             try {
                 out.close();
-            } catch (IOException ignore) {
+            } catch (final IOException ignore) {
             }
         }
         uploaded = true;
